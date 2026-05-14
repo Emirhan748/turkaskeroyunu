@@ -2,46 +2,271 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Oyun Sitem</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAS Studios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    body {
+    *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
-      background: #0a0a0f;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
+      padding: 0;
     }
-    h1 {
-      font-size: 48px;
-      background: linear-gradient(135deg, #00f5ff, #7b2fff);
+
+    :root {
+      --bg-nav: #111114;
+      --text-main: #e8e8f0;
+      --text-muted: #9898a8;
+      --btn-live-border: #c43e9a;
+      --btn-login-bg: #1e1e26;
+      --btn-login-hover: #2a2a36;
+      --nav-height: 60px;
+    }
+
+    body {
+      background: #0c0c10;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-main);
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      background: var(--bg-nav);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-size: 17px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #e8307a, #b94fd8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
+      background-clip: text;
     }
-    p {
-      color: #888;
-      font-size: 18px;
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0 auto;
     }
-    .badge {
-      margin-top: 32px;
-      padding: 8px 20px;
-      border: 1px solid #00f5ff44;
-      border-radius: 4px;
-      color: #00f5ff;
-      font-size: 13px;
-      letter-spacing: 2px;
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 14.5px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: color 0.18s, background 0.18s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-login {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      background: var(--btn-login-bg);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s;
+    }
+
+    .btn-login:hover {
+      background: var(--btn-login-hover);
+    }
+
+    .btn-login svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: auto;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-muted);
+      border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      width: 100%;
+      background: var(--bg-nav);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 12px 20px 16px;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 999;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 10px 12px;
+      border-radius: 8px;
+      transition: background 0.18s, color 0.18s;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+    }
+
+    .mobile-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 8px 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    .demo-content {
+      padding-top: calc(var(--nav-height) + 60px);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 15px;
     }
   </style>
 </head>
 <body>
-  <h1>🎮 Oyun Sitem</h1>
-  <p>Site yakında burada olacak. Takipte kal!</p>
-  <div class="badge">COMING SOON</div>
+
+<nav class="navbar">
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <img src="tas4.png" alt="TAS Studios Logo" />
+    </div>
+    <span class="logo-text">Studios</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#">Hakkımızda</a></li>
+    <li><a href="#">Ekip</a></li>
+    <li><a href="#">Projeler</a></li>
+    <li><a href="#">İstatistikler</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <a href="#" class="btn-login">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+        <polyline points="10 17 15 12 10 7"/>
+        <line x1="15" y1="12" x2="3" y2="12"/>
+      </svg>
+      Giriş Yap
+    </a>
+  </div>
+
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Hakkımızda</a>
+  <a href="#">Ekip</a>
+  <a href="#">Projeler</a>
+  <a href="#">İstatistikler</a>
+  <div class="mobile-divider"></div>
+  <a href="#" class="btn-login">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+      <polyline points="10 17 15 12 10 7"/>
+      <line x1="15" y1="12" x2="3" y2="12"/>
+    </svg>
+    Giriş Yap
+  </a>
+</div>
+
+<div class="demo-content">Sayfa içeriği buraya gelecek.</div>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+  }
+
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+</script>
+
 </body>
 </html>
